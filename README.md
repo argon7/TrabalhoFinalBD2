@@ -6,4 +6,4 @@ https://estgv-my.sharepoint.com/:f:/r/personal/estgv17192_alunos_estgv_ipv_pt/Do
 <h3>Dependencias</h3>
 Coloquei todas no ficheiro requirements.txt. Fácil de resolver com o comando:
 <b>pip install -r requirements.txt</b>
-NUNCA CORRER <b> sudo pip </b> 
+<p>NUNCA CORRER <b> sudo pip </b> 
