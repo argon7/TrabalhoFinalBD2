@@ -12,8 +12,13 @@ class RegistrationForm(FlaskForm): #inherits from FlaskForm
 
     def validate_username(self,username):
         user = User.query.filter_by(username=username.data).first()
-        if user:
+        if user: # if user exist
             raise ValidationError('Username taken. Choose a different one')
+
+    def validate_email(self,email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Email already has an account associated')
 
 
 

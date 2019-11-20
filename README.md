@@ -3,35 +3,15 @@
 https://trello.com/b/vonwvqNa
 <h3>Documentos/Relatório</h3>
 https://estgv-my.sharepoint.com/:f:/r/personal/estgv17192_alunos_estgv_ipv_pt/Documents/BD2%20Projeto?csf=1&e=8Pydom
-<h3>Conceito da dashboard (não definitivo)<h3>
-//Tab geral
-Transações
-    C -registar
-    R -ver
-    U -(não existe)
-    D -eliminar
-Clientes
-    C - Adicionar funcionário
-    R - ver
-    U - Update das informações do funcionário
-    D - eliminar
-//Tab administradores
-Produtos
-    C - Adicionar funcionário
-    R - ver
-    U - (não há...adcionar secalhar) 
-    D - eliminar
-Ementas //TUDO DROPDOWNS
-    C - Adicionar 
-    R - ver
-    U - (não há...adcionar secalhar) 
-    D - eliminar
-Funcionários //TUDO DROPDOWNS
-    C - Adicionar funcionário
-    R - ver
-    U - (não há...adcionar secalhar) 
-    D - eliminar
-// users/pass teste
+<br>
+user: admin@admin.com --- vai dar erro com o sqlalchemy<br>
+pass : admin --- vai dar erro com o sqlalchemy<br>
+<br>
+user: admin1@admin1.com<br>
+pass : admin1<br>
+<br>
+<h2>Conta Mail</h2>
+Gmail: basedados2ipv<br>
+pass: vodkashot
 
-user: admin@admin.com
-pass : admin
+
