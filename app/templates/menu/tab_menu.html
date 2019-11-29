@@ -1,13 +1,19 @@
-{% extends "layout/layout.html" %}
-{% block content %}
+{% extends "layout/layout1.html" %}
+
     <h4>{{ title }}</h4>
-    <div id = "container" style = "width: 550px; height: 400px; margin: 50px auto"></div>
+{% block content1 %}
+
+    <div id = "container" style="..."></div>
+     {% endblock content1 %}
+
+{% block content2 %}
+
 <table id="table_id" class="display">
     <thead>
         <tr>
-            <th>Column 1</th>
+            <th>Column 1 (Clique para mostrar detalhes)</th>
             <th>Column 2</th>
-            <th>Action</th>
+
         </tr>
     </thead>
     <tbody>
@@ -15,14 +21,9 @@
 {% for post in posts %}
 
       <tr>
-            <td> {{ post.author }} </td>
+            <td> <a class="mr-2" href="{{ url_for('tab_menu', post_id=post.id) }}">{{ post.author }}</a> </td>
             <td>{{ post.content }}   </td>
-            <td>
-            	<div>
-                <a class="btn btn-secondary btn-sm " href="#">Update</a>
-                <button type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteModal">Delete</button>
-            </div>
-            </td>
+
 
         </tr>
 
@@ -36,4 +37,6 @@
 
     </tbody>
 </table>
-{% endblock content %}
+
+
+{% endblock content2 %}
