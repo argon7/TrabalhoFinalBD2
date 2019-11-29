@@ -27,7 +27,7 @@
         <!-- Navbar Right Side -->
         <div class="navbar-nav">
             {% if current_user.is_authenticated  %}
-                <a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                <!--<a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>--> <!-- Retirei o dashboard por enquanto-->
                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
             {% else %}
           <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
@@ -57,19 +57,23 @@
 
         {% if current_user.is_authenticated  %}
                 <div class="content-section">
-        <h3>USER : {{ current_user.username }}</h3>
-                    <h4>Transações</h4>
-                    <a class="nav-link" href="#">Nova Transação</a>
-                    <a class="nav-link" href="#">Ver Transações efectuadas</a>
-                <h4>Clientes</h4>
-                    <a class="nav-link" href="#">Novo Cliente</a>
-                    <a class="nav-link" href="#">Ver Clientes</a>
-                <h4>Ementa</h4>
-                    <a class="nav-link" href="#">Nova Ementa</a>
-                    <a class="nav-link" href="#">Ver Ementas</a>
-                <h4>Produtos</h4>
-                    <a class="nav-link" href="#">Novo Produtos</a>
-                    <a class="nav-link" href="#">Ver Produtos</a>
+        <h5>Utilizador {{ current_user.username }}</h5>
+                    <h6>Transações</h6>
+                    <a class="nav-link" href="{{ url_for('tab_transacoes') }}">Ver Transações</a>
+                    <a class="nav-link" href="{{ url_for('new_transacoes') }}">Nova Transação</a>
+
+                <h6>Clientes</h6>
+                    <a class="nav-link" href="{{ url_for('tab_client') }}">Ver Clientes</a>
+                    <a class="nav-link" href="{{ url_for('new_client') }}">Novo Cliente</a>
+
+                <h6>Ementa</h6>
+                    <a class="nav-link" href="{{ url_for('tab_menu') }}">Ver Ementas</a>
+                    <a class="nav-link" href="{{ url_for('new_menu') }}">Nova Ementa</a>
+
+                <h6>Produtos</h6>
+                    <a class="nav-link" href="{{ url_for('tab_product') }}">Ver Produtos</a>
+                    <a class="nav-link" href="{{ url_for('new_product') }}">Novo Produto</a>
+
 
 
       </div>
@@ -105,7 +109,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- datatables -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" src="{{url_for('static',filename='dashboard.js')}}"></script>
+    <!-- Highcharts -->
+      <script src = "https://code.highcharts.com/highcharts.js"></script>
 </body>
 </html>
