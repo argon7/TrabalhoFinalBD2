@@ -3,3 +3,4 @@ sqlalchemy
 WTForms
 flask-bcrypt
 flask-login
+psycopg2
