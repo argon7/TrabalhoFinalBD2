@@ -4,27 +4,17 @@ from app import app, db, bcrypt
 from app.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
-now = datetime.now()
+import psycopg2
+from app import ps_connection, cursor
 
-# ----------------------------- TESTES --------------------------------
-# posts = [
-#    {
-#        'author': 'corey taylor',
-#        'band': 'slipknot',
-#        'content': 'nu metal',
-#        'date': 'april'
-#   },
-#    {
-#        'author': 'taylor momsen',
-#        'band': 'pretty reckless',
-#        'content': 'metal',
-#        'date': 'june'
-#    }
-# ]
+now = datetime.now()
+import psycopg2
+
+
 
 # ---------------------------- LOGIN/REGISTO/HOME ------------------------------------------
 @app.route('/')
-@app.route('/home') # home / about --- é os dois
+@app.route('/home')  # home / about --- é os dois
 def home():
     return render_template("layout/home.html", title='Home')
 
@@ -35,13 +25,25 @@ def register():
         return redirect(url_for('home'))  # MUDAR ISTO DEPOIS...
     form = RegistrationForm()
     if form.validate_on_submit():
-        # hash password and create user
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')  # para ficar em string
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        # inform user
-        # aqui devia ser o admin a adicionar o user?
+        #user = User(username=form.username.data, email=form.email.data, password=hashed_password, restaurante=form.nome_restaurante.data)
+        # ---------------------------commit to db REGISTO---------------
+        try:
+            cursor.callproc('createAdministrador', ['tttt', 'tettttste', 'testeqweqwettttqwe', 'Restaurante Quinta dos Barreiros'])
+            result = cursor.fetchall()
+            for column in result:
+                print("result createAdministrador = ", column[0])
+            #cursor.execute("SELECT * FROM Administrador;")
+            #result=cursor.fetchall()
+            #for column in result:
+            #    print("check")
+            #    print(column[0])
+            #print()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+        finally:
+            print("done")
+        # -----------------------------------------------------------
         flash(f'Account created!', 'success')
         return redirect(url_for('login'))
     return render_template("layout/register.html", title='Register', form=form)
@@ -51,6 +53,29 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
+
+        # ---------------------------check for user in db---------------
+        try:
+            cursor.callproc('login',
+                            [form.email])
+
+            #bcrypt.check_password_hash(user.password, form.password.data)
+
+            result = cursor.fetchall()
+            for column in result:
+                print("result createAdministrador = ", column[0])
+            # cursor.execute("SELECT * FROM Administrador;")
+            # result=cursor.fetchall()
+            # for column in result:
+            #    print("check")
+            #    print(column[0])
+            # print()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+        finally:
+            print("done")
+        # -----------------------------------------------------------
+
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)  # login do user e guarda o remember
@@ -87,7 +112,8 @@ def new_transacoes():
         db.session.commit()
         flash(f'Done!', 'success')
         return redirect(url_for('tab_transacoes'))
-    return render_template('transacoes/new_transacoes.html', title="Nova Transação", form=form, legend='Registar a nova transação')
+    return render_template('transacoes/new_transacoes.html', title="Nova Transação", form=form,
+                           legend='Registar a nova transação')
 
 
 @app.route("/tab_transacoes/<int:post_id>")
@@ -99,7 +125,7 @@ def transacoes(post_id):
 
 @app.route("/tab_transacoes/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
-def update_transacoes(post_id): # cant have same function name
+def update_transacoes(post_id):  # cant have same function name
     form = TransacoesForm()
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
@@ -107,13 +133,14 @@ def update_transacoes(post_id): # cant have same function name
     if form.validate_on_submit():
         post.content = form.content.data
         post.title = form.content.data
-        db.session.commit() # nao faz sentido colocar add() pq ja existe na db, so vale a pena fazer commit para mudar
+        db.session.commit()  # nao faz sentido colocar add() pq ja existe na db, so vale a pena fazer commit para mudar
         flash(f'Changes were updated successfully', 'success')
         return redirect(url_for('post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('transacoes/new_transacoes.html', title="Update Transação", form=form, legend='Update Transação')
+    return render_template('transacoes/new_transacoes.html', title="Update Transação", form=form,
+                           legend='Update Transação')
 
 
 @app.route('/transacoes/<int:post_id>/delete', methods=['POST'])
@@ -126,6 +153,7 @@ def delete_transacoes(post_id):
     db.session.commit()
     flash(f'Delete successfull', 'info')
     return redirect(url_for('transacoes/tab_transacoes'))
+
 
 # ---------------------------- Clientes ------------------------------------------
 
@@ -172,6 +200,7 @@ def new_menu():
         return redirect(url_for('tab_menu'))
     return render_template('menu/new_menu.html', title="Nova Ementa", form=form, legend='Criar nova Ementa')
 
+
 # ---------------------------- Produtos ------------------------------------------
 
 
@@ -193,10 +222,6 @@ def new_product():
         flash(f'Done!', 'success')
         return redirect(url_for('tab_product'))
     return render_template('product/new_product.html', title="Novo produto", form=form, legend='Registar novo produto')
-
-
-
-
 
 
 # ---------------------------- + TESTES ------------------------------------------
@@ -222,7 +247,7 @@ def post(post_id):
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
-def update_post(post_id): # cant have same function name
+def update_post(post_id):  # cant have same function name
     form = PostForm()
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
@@ -230,7 +255,7 @@ def update_post(post_id): # cant have same function name
     if form.validate_on_submit():
         post.content = form.content.data
         post.title = form.content.data
-        db.session.commit() # nao faz sentido colocar add() pq ja existe na db, so vale a pena fazer commit para mudar
+        db.session.commit()  # nao faz sentido colocar add() pq ja existe na db, so vale a pena fazer commit para mudar
         flash(f'Changes were updated successfully', 'success')
         return redirect(url_for('post', post_id=post.id))
     elif request.method == 'GET':
@@ -254,5 +279,5 @@ def delete_post(post_id):
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    posts=Post.query.all()
+    posts = Post.query.all()
     return render_template('testes/dashboard.html', posts=posts, title="Account")

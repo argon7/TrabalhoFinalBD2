@@ -1,24 +1,66 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
 from app.models import User
+import psycopg2
+from app import ps_connection, cursor
 
 #----------------------------- TESTES ----------------------------------------------------------------------
 class RegistrationForm(FlaskForm): #inherits from FlaskForm
+    #---------------------------getnomesrestaurantes---------------
+    try:
+        i=0
+        cursor.callproc('getNomeRestaurantes')
+        result = cursor.fetchall()
+        for column in result:
+            print("result do get restaurantes no form = ", column[3])
+            if(i!=0):
+                choose+= [(column[3],column[3])]
+            else:
+                choose= [(column[3],column[3])]
+            i+=1
+        #choose = "[" + choose + "]"
+        # choose = choose.replace('\'', "")
+    #    print(choose)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+    finally:
+        print("done")
+    #-----------------------------------------------------------
+
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(), EqualTo('password')])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    nome_restaurante = SelectField(u'Restaurante', choices=choose,validators=[DataRequired()])
     submit = SubmitField('Sign Up')
-
+    isit = False
     def validate_username(self,username):
-        user = User.query.filter_by(username=username.data).first()
-        if user: # if user exist
+        try:
+            cursor.callproc('VerifyUsername', [username.data])
+            result = cursor.fetchall()
+            for column in result:
+                print("  VerifyUsername result = ", column[0])
+                isit = column[0]
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+        finally:
+            print("done")
+        if isit:
             raise ValidationError('Username taken. Choose a different one')
 
     def validate_email(self,email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
+        try:
+            cursor.callproc('VerifyEmail', [email.data])
+            result = cursor.fetchall()
+            for column in result:
+                print("  VerifyEmail result = ", column[0])
+                isitemail = column[0]
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+        finally:
+            print("done")
+        if isitemail:
             raise ValidationError('Email already has an account associated')
 
 

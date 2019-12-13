@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-
+import psycopg2
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '76d5f16cf6bb57be0bd6851a8c61df1d'  # secret key for security
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  # path da db
@@ -12,6 +12,15 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
+
+ps_connection = psycopg2.connect(user="aragao",
+                                 password="bdpassword",
+                                 host="192.168.43.59",
+                                 port="5432",
+                                 database="TrabalhoBD")
+cursor = ps_connection.cursor()
+
+
 
 # a package structure evita "dependency hell". Mas quando no modulo routes.py temos um import da variavel app, temos de
 # nos certificar que a variavel está declarada antes de ser importada, senão temos uma dependencia circular
