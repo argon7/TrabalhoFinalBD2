@@ -10,8 +10,15 @@ pass : admin --- vai dar erro com o sqlalchemy<br>
 user: admin1@admin1.com<br>
 pass : admin1<br>
 <br>
-<h2>Conta Mail</h2>
+<h2>Conta Mail / ElephantSQL</h2>
 Gmail: basedados2ipv<br>
-pass: vodkashot
+pass: vodkashot<br>
+<br>
+<br>                                 user="fphawxtr",
+<br>                                 password="wjLOHRDOaplszZ6zyg1GyoGstd2hUWUf",
+<br>                                 host="rogue.db.elephantsql.com",
+<br>                                 port="5432",
+<br>                                 database="fphawxtr"
+
 
 
