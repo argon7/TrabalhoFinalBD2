@@ -13,11 +13,11 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
-ps_connection = psycopg2.connect(user="aragao",
-                                 password="bdpassword",
-                                 host="192.168.43.59",
+ps_connection = psycopg2.connect(user="fphawxtr",
+                                 password="RLu6UKWGf8AS-dQIKRYVrRujGy_surEA",
+                                 host="rogue.db.elephantsql.com",
                                  port="5432",
-                                 database="TrabalhoBD")
+                                 database="fphawxtr")
 cursor = ps_connection.cursor()
 
 

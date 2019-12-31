@@ -52,37 +52,36 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    thereisuser = False
     if form.validate_on_submit():
-
         # ---------------------------check for user in db---------------
         try:
-            cursor.callproc('login',
-                            [form.email])
-
-            #bcrypt.check_password_hash(user.password, form.password.data)
-
-            result = cursor.fetchall()
+            cursor.execute("SELECT * FROM Administrador;")
+            result=cursor.fetchall()
             for column in result:
-                print("result createAdministrador = ", column[0])
-            # cursor.execute("SELECT * FROM Administrador;")
-            # result=cursor.fetchall()
-            # for column in result:
-            #    print("check")
-            #    print(column[0])
-            # print()
+
+                if form.email.data == column[3]:
+                    L_email = column[3]
+
+                    thereisuser = True
+                if form.password.data == column[4]:
+                    L_pass = column[4]
+
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error while connecting to PostgreSQL", error)
         finally:
             print("done")
         # -----------------------------------------------------------
-
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)  # login do user e guarda o remember
-            next_page = request.args.get('next')  # get method melhor que brackets
-            # O replace foi usado pq next guardava "/account" e nao "account"...  e depois nao localizava os templates
-            # soluçao estupida, mas dá ... e por definição se dá não é estupida :)
-            return redirect(url_for(next_page.replace('/', ''))) if next_page else redirect(url_for('tab_transacoes'))
+        # hash code error here because of not being encoded in utf-8 ?
+        if (thereisuser):
+            user = L_email
+            if thereisuser and bcrypt.check_password_hash(L_pass, form.password.data):
+                login_user(user, remember=form.remember.data)  # login do user e guarda o remember
+                next_page = request.args.get('next')  # get method melhor que brackets
+                # O replace foi usado pq next guardava "/account" e nao "account"...  e depois nao localizava os templates
+                # soluçao estupida, mas dá ... e por definição se dá não é estupida :)
+                print("wtf")
+                return redirect(url_for(next_page.replace('/', ''))) if next_page else redirect(url_for('tab_transacoes'))
         else:
             flash(f'Login unsuccessful', 'danger')
     return render_template("layout/login.html", title='Login', form=form)

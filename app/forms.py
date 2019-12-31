@@ -5,37 +5,44 @@ from app.models import User
 import psycopg2
 from app import ps_connection, cursor
 
-#----------------------------- TESTES ----------------------------------------------------------------------
-class RegistrationForm(FlaskForm): #inherits from FlaskForm
-    #---------------------------getnomesrestaurantes---------------
+
+# ----------------------------- TESTES ----------------------------------------------------------------------
+class RegistrationForm(FlaskForm):  # inherits from FlaskForm
+    # ---------------------------getnomesrestaurantes---------------
     try:
-        i=0
-        cursor.callproc('getNomeRestaurantes')
+        i = 0
+        # cursor.callproc('getNomeRestaurantes')
+        cursor.execute("SELECT * FROM restaurante")
         result = cursor.fetchall()
+        #print(result)
         for column in result:
-            print("result do get restaurantes no form = ", column[3])
-            if(i!=0):
-                choose+= [(column[3],column[3])]
+            #print(column[3])
+            if i==0:
+                choose = [(column[3],column[3])]
+                i=i+1
             else:
-                choose= [(column[3],column[3])]
-            i+=1
-        #choose = "[" + choose + "]"
-        # choose = choose.replace('\'', "")
-    #    print(choose)
+                choose += [(column[3], column[3])]
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
     finally:
-        print("done")
-    #-----------------------------------------------------------
+        print()
+        # O formato da lista que recebe tem de ser igual a
+        # choose = [('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')]
+
+        #print(choose)
+        #print("done")
+
+    # -----------------------------------------------------------
 
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    nome_restaurante = SelectField(u'Restaurante', choices=choose,validators=[DataRequired()])
+    nome_restaurante = SelectField(u'Restaurante', choices=choose, validators=[DataRequired()])
     submit = SubmitField('Sign Up')
     isit = False
-    def validate_username(self,username):
+
+    def validate_username(self, username):
         try:
             cursor.callproc('VerifyUsername', [username.data])
             result = cursor.fetchall()
@@ -49,7 +56,7 @@ class RegistrationForm(FlaskForm): #inherits from FlaskForm
         if isit:
             raise ValidationError('Username taken. Choose a different one')
 
-    def validate_email(self,email):
+    def validate_email(self, email):
         try:
             cursor.callproc('VerifyEmail', [email.data])
             result = cursor.fetchall()
@@ -95,7 +102,7 @@ class ClientForm(FlaskForm):
     submit = SubmitField('Post')
 
 
-# ----------------------------- CLIENTES ----------------------------------------------------------------------
+# ----------------------------- Menu ----------------------------------------------------------------------
 
 
 class MenuForm(FlaskForm):
@@ -104,7 +111,7 @@ class MenuForm(FlaskForm):
     submit = SubmitField('Post')
 
 
-# ----------------------------- CLIENTES ----------------------------------------------------------------------
+# ----------------------------- Product ----------------------------------------------------------------------
 
 
 class ProductForm(FlaskForm):
