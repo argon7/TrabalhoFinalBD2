@@ -1,4 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
+from flask_bcrypt import generate_password_hash
+
 from app.forms import RegistrationForm, LoginForm, PostForm, TransacoesForm, ClientForm, ProductForm, MenuForm
 from app import app, db, bcrypt
 from app.models import User, Post
@@ -9,7 +11,6 @@ from app import ps_connection, cursor
 
 now = datetime.now()
 import psycopg2
-
 
 
 # ---------------------------- LOGIN/REGISTO/HOME ------------------------------------------
@@ -60,28 +61,25 @@ def login():
             result=cursor.fetchall()
             for column in result:
 
-                if form.email.data == column[3]:
+                if (form.email.data == column[3] and form.password.data == column[4]):
+                    L_id = column[0]
+                    L_nRestaurante = column[1]
                     L_email = column[3]
-
-                    thereisuser = True
-                if form.password.data == column[4]:
                     L_pass = column[4]
+                    thereisuser = True
+
 
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error while connecting to PostgreSQL", error)
         finally:
             print("done")
-        # -----------------------------------------------------------
-        # hash code error here because of not being encoded in utf-8 ?
+
         if (thereisuser):
-            user = L_email
-            if thereisuser and bcrypt.check_password_hash(L_pass, form.password.data):
-                login_user(user, remember=form.remember.data)  # login do user e guarda o remember
-                next_page = request.args.get('next')  # get method melhor que brackets
-                # O replace foi usado pq next guardava "/account" e nao "account"...  e depois nao localizava os templates
-                # soluçao estupida, mas dá ... e por definição se dá não é estupida :)
-                print("wtf")
-                return redirect(url_for(next_page.replace('/', ''))) if next_page else redirect(url_for('tab_transacoes'))
+            user = User(int(L_id),L_email,
+                        generate_password_hash(L_pass),L_nRestaurante )
+
+            login_user(user, remember=form.remember.data)  # login do user e guarda o remember
+            return redirect(url_for('tab_transacoes'))
         else:
             flash(f'Login unsuccessful', 'danger')
     return render_template("layout/login.html", title='Login', form=form)

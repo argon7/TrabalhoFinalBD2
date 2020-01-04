@@ -17,6 +17,12 @@ class User(db.Model, UserMixin):
     nome_restaurante = db.Column(db.String(160), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
 
+    def __init__(self,id,email,password,nome_restaurante):
+        self.id = id
+        self.email = email
+        self.password=password
+        self.nome_restaurante=nome_restaurante
+
     def __repr__(self):
         return f"User('{self.username}','{self.email}','{self.image_file}')"
 
