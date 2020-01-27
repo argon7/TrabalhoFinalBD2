@@ -1,6 +1,4 @@
 flask
-sqlalchemy
 WTForms
-flask-bcrypt
-flask-login
+flask-wtf
 psycopg2

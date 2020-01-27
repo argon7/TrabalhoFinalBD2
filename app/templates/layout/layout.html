@@ -26,7 +26,7 @@
         </div>
         <!-- Navbar Right Side -->
         <div class="navbar-nav">
-            {% if current_user.is_authenticated  %}
+            {% if IsUserLoggedIn %}
                 <!--<a class="nav-item nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>--> <!-- Retirei o dashboard por enquanto-->
                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
             {% else %}
@@ -40,6 +40,7 @@
 </header>
 <main role="main" class="container">
   <div class="row">
+
     <div class="col-md-8">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -50,14 +51,14 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        {% block content %}{% endblock %}
+        {% block content1 %}{% endblock content1 %}
     </div>
   <!-- SIDE MENU -->
     <div class="col-md-4">
 
-        {% if current_user.is_authenticated  %}
+        {% if IsUserLoggedIn  %}
                 <div class="content-section">
-        <h5>Utilizador {{ current_user.username }}</h5>
+        <h5>Utilizador </h5>
                     <h6>Transações</h6>
                     <a class="nav-link" href="{{ url_for('tab_transacoes') }}">Ver Transações</a>
                     <a class="nav-link" href="{{ url_for('new_transacoes') }}">Nova Transação</a>
@@ -87,20 +88,15 @@
         </p>
       </div>
             {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
   <!-- END SIDE MENU -->
+  </div>
+<div class="row">
+    <div class="col-md-12">
+
+        {% block content2 %}{% endblock content2%}
+    </div>
+
   </div>
 </main>
 <!-- Optional JavaScript -->
@@ -111,7 +107,7 @@
     <!-- datatables -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" src="{{url_for('static',filename='dashboard.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{url_for('static',filename='main.js')}}"></script>
     <!-- Highcharts -->
       <script src = "https://code.highcharts.com/highcharts.js"></script>
 </body>

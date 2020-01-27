@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
-from app.models import User
 import psycopg2
 from app import ps_connection, cursor
 
