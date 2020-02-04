@@ -11,9 +11,9 @@
 <table id="table_id" class="display">
     <thead>
         <tr>
-            <th>Column 1 (Clique para mostrar detalhes)</th>
-            <th>Column 2</th>
-
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Data de Registo</th>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +21,9 @@
 {% for post in posts %}
 
       <tr>
-            <td> <a class="mr-2" href="{{ url_for('tab_client', post_id=post.id) }}">{{ post.author }}</a> </td>
-            <td>{{ post.content }}   </td>
+            <td>{{ post[0] }}</td>
+            <td><a class="mr-2" href="{{ url_for('tab_client', post_id=post.id) }}">{{ post[1] }}</a></td>
+            <td>{{ post[2] }}   </td>
 
 
         </tr>

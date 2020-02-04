@@ -22,3 +22,58 @@ pass: vodkashot<br>
 
 
 
+
+API Example fucntion blah blah
+````
+CREATE OR REPLACE FUNCTION createAdministrador(username_admin text,email_admin text, password_admin text, nome_Restaurante text) returns boolean AS $$
+DECLARE IDRestaurante_variable int;
+DECLARE ExistsEmail int;
+DECLARE ExistsUsername int;
+BEGIN
+SELECT COUNT (*) from Administrador where email_administrador= email_admin into ExistsEmail;
+IF(ExistsEmail > 0) THEN
+   RETURN FALSE;
+END IF;
+SELECT COUNT (*) from Administrador where username_administrador= username_admin into ExistsUsername;
+IF(ExistsUsername > 0) THEN
+   RETURN FALSE;
+END IF;
+select getIdRestaurante(nome_Restaurante) into IDRestaurante_variable;
+IF(IDRestaurante_variable = 0) THEN
+	RETURN FALSE;
+END IF;
+insert into Administrador(id_restaurante,username_administrador, email_administrador, password_administrador)
+   values ( IDRestaurante_variable,username_admin, email_admin, password_admin);
+RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+````
+
+API Example fucntion blah blahAPI Example fucntion blah blah
+
+````
+CREATE OR REPLACE FUNCTION createAdministrador(username_admin text,email_admin text, password_admin text, nome_Restaurante text) returns boolean AS $$
+DECLARE IDRestaurante_variable int;
+DECLARE ExistsEmail int;
+DECLARE ExistsUsername int;
+BEGIN
+SELECT COUNT (*) from Administrador where email_administrador= email_admin into ExistsEmail;
+IF(ExistsEmail > 0) THEN
+   RETURN FALSE;
+END IF;
+SELECT COUNT (*) from Administrador where username_administrador= username_admin into ExistsUsername;
+IF(ExistsUsername > 0) THEN
+   RETURN FALSE;
+END IF;
+select getIdRestaurante(nome_Restaurante) into IDRestaurante_variable;
+IF(IDRestaurante_variable = 0) THEN
+	RETURN FALSE;
+END IF;
+insert into Administrador(id_restaurante,username_administrador, email_administrador, password_administrador)
+   values ( IDRestaurante_variable,username_admin, email_admin, password_admin);
+RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+````
+
+

@@ -5,32 +5,97 @@
             {{ form.hidden_tag() }}<!-- hidden_tag for protection against xss -->
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4"> {{ legend }} </legend>
+
+                <h4>Opções de bebidas</h4>
                 <div class="form-group">
-                    {{ form.title.label(class="form-control-label") }}
-                    {% if form.title.errors %}
-                        {{ form.title(class="form-control form-control-lg is-invalid") }}
+                    {{ form.Bebida1.label(class="form-control-label") }}
+                    {% if form.Bebida1.errors %}
+                        {{ form.Bebida1(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {%  for error in form.title.errors %}
+                            {%  for error in form.Bebida1.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                         {% else %}
-                        {{ form.title(class="form-control form-control-lg") }}
+                        {{ form.Bebida1(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.content.label(class="form-control-label") }}
-                    {% if form.content.errors %}
-                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+
+
+            <div class="form-group">
+                    {{ form.Bebida2.label(class="form-control-label") }}
+                    {% if form.Bebida2.errors %}
+                        {{ form.Bebida2(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {%  for error in form.content.errors %}
+                            {%  for error in form.Bebida2.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                         {% else %}
-                        {{ form.content(class="form-control form-control-lg") }}
+                        {{ form.Bebida2(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
+
+            <div class="form-group">
+                    {{ form.Bebida3.label(class="form-control-label") }}
+                    {% if form.Bebida3.errors %}
+                        {{ form.Bebida3(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {%  for error in form.Bebida3.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.Bebida3(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+            <h4>Opções de Entradas</h4>
+                <div class="form-group">
+                    {{ form.Entrada1.label(class="form-control-label") }}
+                    {% if form.Entrada1.errors %}
+                        {{ form.Entrada1(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {%  for error in form.Entrada1.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.Entrada1(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
+            <div class="form-group">
+                    {{ form.Entrada2.label(class="form-control-label") }}
+                    {% if form.Entrada2.errors %}
+                        {{ form.Entrada2(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {%  for error in form.Entrada2.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.Entrada2(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
+            <div class="form-group">
+                    {{ form.Entrada3.label(class="form-control-label") }}
+                    {% if form.Entrada3.errors %}
+                        {{ form.Entrada3(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {%  for error in form.Entrada3.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.Entrada3(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
 
             </fieldset>
             <div class="form-group">

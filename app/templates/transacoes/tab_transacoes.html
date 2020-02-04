@@ -13,16 +13,19 @@
         <tr>
             <th>Column 1 (Clique para mostrar detalhes)</th>
             <th>Column 2</th>
+            <th>Column 3 ID</th>
 
         </tr>
     </thead>
     <tbody>
 
-{% for post in posts %}
+{% for each in alltransacoes %}
 
-      <tr>
-            <td> <a class="mr-2" href="#">{{ post.author }}</a> </td>
-            <td>{{ post.content }}   </td>
+
+
+       <td> <a class="mr-2" href="{{ url_for('transacoes', post_id=each[0]) }}" >{{ each[0] }}</a> </td>
+            <td>{{ each[1] }}   </td>
+            <td>{{ each[2] }}   </td>
 
 
         </tr>
@@ -40,3 +43,54 @@
 
 
 {% endblock content2 %}
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    $('#table_id').DataTable();
+    var Mychart = Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Acessos ao Sistema'
+        },
+        subtitle: {
+            text: 'Registo de Autenticações Semanais'
+        },
+        xAxis: {
+            categories: ['Domingo','Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado']
+        },
+        yAxis: {
+            title: {
+                text: 'Número de Autenticações'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Joao',
+            data: {{ Joao }}
+        },{
+            name: 'Xano',
+            data: {{ Xano }}
+        },
+            {
+            name: 'Jorge',
+            data: {{ Jorge }}
+        },
+            {
+            name: 'unknown',
+            data: {{ Unknown }}
+        }]
+    });
+});
+
+</script>

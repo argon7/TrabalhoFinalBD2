@@ -1,42 +1,66 @@
 {% extends "layout/layout.html" %}
 
-    <h4>{{ title }}</h4>
+<h4>{{ title }}</h4>
 {% block content1 %}
 
-    <div id = "container" style="..."></div>
-     {% endblock content1 %}
+    <div id="container" style="..."></div>
+{% endblock content1 %}
 
 {% block content2 %}
 
-<table id="table_id" class="display">
-    <thead>
+    <table id="table_id" class="display">
+        <thead>
         <tr>
-            <th>Column 1 (Clique para mostrar detalhes)</th>
-            <th>Column 2</th>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Nome</th>
+            <th>Designação</th>
+            <th>Preço</th>
+            <th>Alergia</th>
+            <th>Quantidade</th>
 
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
 
-{% for post in posts %}
+        {% for each in result %}
 
-      <tr>
-            <td> <a class="mr-2" href="{{ url_for('tab_product', post_id=post.id) }}">{{ post.author }}</a> </td>
-            <td>{{ post.content }}   </td>
+            <tr>
+                <td><a class="mr-2" href="{{ url_for('product', post_id=each[0]) }}">{{ each[0] }}</a></td>
+                <!-- tipo -->
+                {% if each[1] == 0 %}
+                    <td>Entrada</td>
+                {% endif %}
+                {% if each[1] == 1 %}
+                    <td>Bebidas</td>
+                {% endif %}
+                {% if each[1] == 2 %}
+                    <td>Sobremesas</td>
+                {% endif %}
+                {% if each[1] == 3 %}
+                    <td>Carne</td>
+                {% endif %}
+                {% if each[1] == 4 %}
+                    <td>Peixe</td>
+                {% endif %}
+                <td>{{ each[2] }}</td>
+                <td>{{ each[3] }}</td>
+                <td>{{ each[4] }}</td>
+                <td>{{ each[5] }}</td>
+                <td>{{ each[6] }}</td>
+
+            </tr>
 
 
-        </tr>
 
 
 
 
+        {% endfor %}
 
 
-{% endfor %}
-
-
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
 
 {% endblock content2 %}
