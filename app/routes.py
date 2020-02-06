@@ -126,6 +126,18 @@ def new_transacoes():
     global AdminNameLoggedIn
     form = TransacoesForm()
     if form.validate_on_submit():
+        try:
+            print("HELLO IT HAPPENED")
+            print(" create Transacoes : sent " + AdminNameLoggedIn, 1)
+            cursor.callproc('createTransacao',
+                            [AdminNameLoggedIn, int(form.title.data), int(form.lugar.data), int(form.valor.data),
+                             int(form.carne.data), int(form.peixe.data), int(form.entrada.data), int(form.bebida.data),
+                             int(form.sobremesa.data)])
+            alltransacoes = cursor.fetchall()
+            print("Transacoes got from bd")
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+
         flash(f'Done!', 'success')
         return redirect(url_for('tab_transacoes'))
     return render_template('transacoes/new_transacoes.html', title="Nova Transação", form=form,
@@ -136,7 +148,13 @@ def new_transacoes():
 def transacoes(post_id):
     global IsUserLoggedIn
     global AdminNameLoggedIn
-    return render_template('transacoes/transacoes.html', post=posts[post_id - 1], IsUserLoggedIn=IsUserLoggedIn)
+    try:
+        cursor.callproc('getTransacao', [post_id])
+        transac = cursor.fetchall()
+        print(transac)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+    return render_template('transacoes/transacoes.html', transac=transac[0], IsUserLoggedIn=IsUserLoggedIn)
 
 
 @app.route("/tab_transacoes/<int:post_id>/update", methods=['GET', 'POST'])
@@ -146,8 +164,8 @@ def update_transacoes(post_id):
     # cant have same function name
     form = TransacoesForm()
     if form.validate_on_submit():
-        post.content = form.content.data
-        post.title = form.content.data
+        post[0] = form.content.data
+        post[1] = form.content.data
         flash(f'Changes were updated successfully', 'success')
         return redirect(url_for('transacoes/transacoes.html', post_id=post.id))
     elif request.method == 'GET':
@@ -161,8 +179,14 @@ def update_transacoes(post_id):
 def delete_transacoes(post_id):
     global IsUserLoggedIn
     global AdminNameLoggedIn
+    try:
+        cursor.callproc('deletetransacao', [post_id])
+        transac = cursor.fetchall()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+
     flash(f'Delete successfull', 'info')
-    return redirect(url_for('transacoes/tab_transacoes'))
+    return redirect(url_for('tab_transacoes'))
 
 
 # ---------------------------- Clientes ------------------------------------------
@@ -187,10 +211,44 @@ def new_client():
     global AdminNameLoggedIn
     form = ClientForm()
     if form.validate_on_submit():
+        try:
+            print(" Nome cliente enviado : " + form.NomeCliente.data)
+            cursor.callproc('createCliente', [form.NomeCliente.data, AdminNameLoggedIn])
+            result = cursor.fetchall()
+            print(result)
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+
         flash(f'Done!', 'success')
         return redirect(url_for('tab_client'))
     return render_template('client/new_client.html', title="Novo Cliente", form=form,
                            legend='Registrar novo cliente no seu restaurante', IsUserLoggedIn=IsUserLoggedIn)
+
+
+@app.route("/tab_client/<int:post_id>")
+def client(post_id):
+    global IsUserLoggedIn
+    global AdminNameLoggedIn
+    try:
+        cursor.callproc('getclientes', [post_id])
+        client = cursor.fetchall()
+        print(client)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+    return render_template('client/client.html', client=client[0], IsUserLoggedIn=IsUserLoggedIn)
+
+
+@app.route('/client/<int:post_id>/delete', methods=['POST'])
+def delete_client(post_id):
+    global IsUserLoggedIn
+    global AdminNameLoggedIn
+    try:
+        cursor.callproc('deletecartao', [AdminNameLoggedIn, post_id])
+        client = cursor.fetchall()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+    flash(f'Delete successfull', 'info')
+    return redirect(url_for('tab_client'))
 
 
 # ---------------------------- Ementa --------------------------------------------
@@ -198,9 +256,73 @@ def new_client():
 
 @app.route("/tab_menu")
 def tab_menu():
-    global IsUserLoggedIn
+    global IsUserLoggedIn, ementa
     global AdminNameLoggedIn
-    return render_template('menu/tab_menu.html', posts=posts, title="Ementas", IsUserLoggedIn=IsUserLoggedIn)
+    # Domingo
+    try:
+        print("EMENTA : DOMINGO : ")
+        cursor.callproc('getAllEmentas', [AdminNameLoggedIn, 0])
+        domingo = cursor.fetchall()
+        print(domingo)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+    # Segunda
+    try:
+        print("EMENTA : SEGUNDA : ")
+        cursor.callproc('getAllEmentas', [AdminNameLoggedIn, 1])
+        segunda = cursor.fetchall()
+        print(segunda)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+    # Terça
+    try:
+        print("EMENTA : TERÇA : ")
+        cursor.callproc('getAllEmentas', [AdminNameLoggedIn, 2])
+        terca = cursor.fetchall()
+        print(terca)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+    # quarta
+    try:
+        print("EMENTA : QUARTA : ")
+        cursor.callproc('getAllEmentas', [AdminNameLoggedIn, 3])
+        quarta = cursor.fetchall()
+        print(quarta)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+    # quinta
+    try:
+        print("EMENTA : QUINTA : ")
+        cursor.callproc('getAllEmentas', [AdminNameLoggedIn, 4])
+        quinta = cursor.fetchall()
+        print(quinta)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+    # sexta
+    try:
+        print("EMENTA : SEXTA : ")
+        cursor.callproc('getAllEmentas', [AdminNameLoggedIn, 5])
+        sexta = cursor.fetchall()
+        print(sexta)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+    # sabado
+    try:
+        print("EMENTA : SABADO : ")
+        cursor.callproc('getAllEmentas', [AdminNameLoggedIn, 6])
+        sabado = cursor.fetchall()
+        print(sabado)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+
+
+    return render_template('menu/tab_menu.html', posts=domingo, segunda=segunda, terca=terca, quarta=quarta,quinta=quinta,sexta=sexta,sabado=sabado, title="Ementas", IsUserLoggedIn=IsUserLoggedIn)
 
 
 @app.route("/new_menu", methods=['GET', 'POST'])
@@ -209,9 +331,19 @@ def new_menu():
     global AdminNameLoggedIn
     form = MenuForm()
     if form.validate_on_submit():
+        try:
+            print(" ementa enviado : " + AdminNameLoggedIn)
+            cursor.callproc('createEmenta',
+                            [AdminNameLoggedIn, int(form.dia.data), int(form.carne.data), int(form.peixe.data),
+                             int(form.entrada.data), int(form.bebida.data), int(form.sobremesa.data)])
+            result = cursor.fetchall()
+            print(result)
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
         flash(f'Done!', 'success')
         return redirect(url_for('tab_menu'))
-    return render_template('menu/new_menu.html', title="Nova Ementa", form=form, legend='Editar a Ementa desta semana',
+    return render_template('menu/new_menu.html', title="Ementa", form=form,
+                           legend='Editar a ementa do dia desta semana',
                            IsUserLoggedIn=IsUserLoggedIn)
 
 
@@ -284,29 +416,6 @@ def update_product(post_id):
                            legend='Update Transação', IsUserLoggedIn=IsUserLoggedIn)
 
 
-@app.route('/product/<int:post_id>/delete', methods=['POST'])
-def delete_product(post_id):
-    global IsUserLoggedIn
-    global AdminNameLoggedIn
-    flash(f'Delete successfull', 'info')
-    return redirect(url_for('product/tab_product'))
-
-
-@app.route("/product/<int:post_id>/update", methods=['GET', 'POST'])
-def update_post(post_id):
-    global IsUserLoggedIn
-    global AdminNameLoggedIn
-    # cant have same function name
-    form = ProductForm()
-    if form.validate_on_submit():
-        post.content = form.content.data
-        post.title = form.content.data
-        flash(f'Changes were updated successfully', 'success')
-        return redirect(url_for('post', post_id=post.id))
-    return render_template('testes/create_post.html', title="Update Post", form=form, legend='Update Post',
-                           IsUserLoggedIn=IsUserLoggedIn)
-
-
 # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
@@ -335,7 +444,7 @@ def update_post(post_id):
     global IsUserLoggedIn
     global AdminNameLoggedIn
     # cant have same function name
-    form = PostForm()
+    form = TransacoesForm()
     if form.validate_on_submit():
         post.content = form.content.data
         post.title = form.content.data
@@ -359,3 +468,24 @@ def dashboard():
     global IsUserLoggedIn
     global AdminNameLoggedIn
     return render_template('testes/dashboard.html', posts=posts, title="Account", IsUserLoggedIn=IsUserLoggedIn)
+
+
+@app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+def update_post2(post_id):
+    global IsUserLoggedIn
+    global AdminNameLoggedIn
+    # cant have same function name
+    form = PostForm()
+    if form.validate_on_submit():
+        post.content = form.content.data
+        post.title = form.content.data
+        flash(f'Changes were updated successfully', 'success')
+        return redirect(url_for('post', post_id=post.id))
+    elif request.method == 'GET':
+        print("YELLLLLO")
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post',
+                           form=form, legend='Update Post')
+    # return render_template('testes/create_post.html', title="Update Post", form=form, legend='Update Post',
+    #                        IsUserLoggedIn=IsUserLoggedIn)

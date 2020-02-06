@@ -1,12 +1,9 @@
 {% extends "layout/layout.html" %}
 
     <h4>{{ title }}</h4>
+
+
 {% block content1 %}
-
-    <div id = "container" style="..."></div>
-     {% endblock content1 %}
-
-{% block content2 %}
 
 <table id="table_id" class="display">
     <thead>
@@ -21,8 +18,8 @@
 {% for post in posts %}
 
       <tr>
-            <td>{{ post[0] }}</td>
-            <td><a class="mr-2" href="{{ url_for('tab_client', post_id=post.id) }}">{{ post[1] }}</a></td>
+            <td><a class="mr-2" href="{{ url_for('client', post_id=post[0]) }}"> {{ post[0] }}</a></td>
+            <td>{{ post[1] }}</td>
             <td>{{ post[2] }}   </td>
 
 
@@ -40,4 +37,4 @@
 </table>
 
 
-{% endblock content2 %}
+{% endblock content1 %}

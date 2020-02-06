@@ -1,20 +1,17 @@
 {% extends "layout/layout.html" %}
 
     <h4>{{ title }}</h4>
+
+
 {% block content1 %}
-
-    <div id = "container" style="..."></div>
-     {% endblock content1 %}
-
-{% block content2 %}
 
 <table id="table_id" class="display">
     <thead>
         <tr>
-            <th>Column 1 (Clique para mostrar detalhes)</th>
-            <th>Column 2</th>
-            <th>Column 3 ID</th>
-
+            <th>ID</th>
+            <th>Nome cliente</th>
+            <th>Valor €</th>
+            <th>Data</th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +23,7 @@
        <td> <a class="mr-2" href="{{ url_for('transacoes', post_id=each[0]) }}" >{{ each[0] }}</a> </td>
             <td>{{ each[1] }}   </td>
             <td>{{ each[2] }}   </td>
+            <td>{{ each[3] }}   </td>
 
 
         </tr>
@@ -42,55 +40,4 @@
 </table>
 
 
-{% endblock content2 %}
-
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    $('#table_id').DataTable();
-    var Mychart = Highcharts.chart('container', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Acessos ao Sistema'
-        },
-        subtitle: {
-            text: 'Registo de Autenticações Semanais'
-        },
-        xAxis: {
-            categories: ['Domingo','Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado']
-        },
-        yAxis: {
-            title: {
-                text: 'Número de Autenticações'
-            }
-        },
-        plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: true
-                },
-                enableMouseTracking: false
-            }
-        },
-        series: [{
-            name: 'Joao',
-            data: {{ Joao }}
-        },{
-            name: 'Xano',
-            data: {{ Xano }}
-        },
-            {
-            name: 'Jorge',
-            data: {{ Jorge }}
-        },
-            {
-            name: 'unknown',
-            data: {{ Unknown }}
-        }]
-    });
-});
-
-</script>
+{% endblock content1 %}

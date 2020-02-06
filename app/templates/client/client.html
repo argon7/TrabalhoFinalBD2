@@ -18,12 +18,12 @@
   <div class="media-body">
     <div class="article-metadata">
       <a class="mr-2">Informações </a>
-      <small class="text-muted"> ID {{ post[0] }}</small> <br>
+      <small class="text-muted"> ID {{ client[0] }}</small> <br>
 
     </div>
-      <p class="article-content"> <strong>Nome</strong> {{ post[1] }} </p>
+      <p class="article-content"> <strong>Nome</strong> {{ client[1] }} </p>
 
-      <p class="article-content"> <strong>Data</strong> {{ post[2] }}</p>
+      <p class="article-content"> <strong>Data</strong> {{ client[2] }}</p>
 
   </div>
 
@@ -47,7 +47,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <form action="{{ url_for('delete_client', post_id=post[0]) }}" method="POST">
+        <form action="{{ url_for('delete_client', post_id=client[0]) }}" method="POST">
             <input class="btn btn-danger" type="submit" value="Delete">
         </form>
       </div>

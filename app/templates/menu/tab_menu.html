@@ -1,37 +1,101 @@
 {% extends "layout/layout.html" %}
 
     <h4>{{ title }}</h4>
+
+
 {% block content1 %}
 
-    <div id = "container" style="..."></div>
-     {% endblock content1 %}
-
-{% block content2 %}
-
-<table id="table_id" class="display">
+<table class="table">
     <thead>
         <tr>
-            <th>Column 1 (Clique para mostrar detalhes)</th>
-            <th>Column 2</th>
+            <th>Dia da Semana</th>
+            <th>Prato Carne</th>
+            <th>Prato Peixe</th>
+            <th>Prato Entrada</th>
+            <th>Prato Bebida</th>
+            <th>Prato Sobremesa</th>
+
+
 
         </tr>
     </thead>
     <tbody>
 
 {% for post in posts %}
+      <tr>
+            <td> <strong>Domingo</strong> </td>
+            <td>{{ post[1] }}   </td>
+            <td>{{ post[2] }}   </td>
+            <td>{{ post[3] }}   </td>
+            <td>{{ post[4] }}   </td>
+            <td>{{ post[5] }}  </td>
+        </tr>
+{% endfor %}
+    {% for post in segunda %}
 
       <tr>
-            <td> <a class="mr-2" href="{{ url_for('tab_menu', post_id=post.id) }}">{{ post.author }}</a> </td>
-            <td>{{ post.content }}   </td>
-
-
+            <td> <strong>Segunda</strong> </td>
+            <td>{{ post[1] }}   </td>
+            <td>{{ post[2] }}   </td>
+            <td>{{ post[3] }}   </td>
+            <td>{{ post[4] }}   </td>
+            <td>{{ post[5] }}  </td>
         </tr>
+{% endfor %}
+        {% for post in terca %}
 
+      <tr>
+            <td> <strong>Terça</strong> </td>
+            <td>{{ post[1] }}   </td>
+            <td>{{ post[2] }}   </td>
+            <td>{{ post[3] }}   </td>
+            <td>{{ post[4] }}   </td>
+            <td>{{ post[5] }}  </td>
+        </tr>
+{% endfor %}
+        {% for post in quarta %}
 
+      <tr>
+            <td> <strong>Quarta</strong> </td>
+            <td>{{ post[1] }}   </td>
+            <td>{{ post[2] }}   </td>
+            <td>{{ post[3] }}   </td>
+            <td>{{ post[4] }}   </td>
+            <td>{{ post[5] }}  </td>
+        </tr>
+{% endfor %}
+        {% for post in quinta %}
 
+      <tr>
+            <td> <strong>Quinta</strong> </td>
+            <td>{{ post[1] }}   </td>
+            <td>{{ post[2] }}   </td>
+            <td>{{ post[3] }}   </td>
+            <td>{{ post[4] }}   </td>
+            <td>{{ post[5] }}  </td>
+        </tr>
+{% endfor %}
+        {% for post in sexta %}
 
+      <tr>
+            <td> <strong>Sexta</strong> </td>
+            <td>{{ post[1] }}   </td>
+            <td>{{ post[2] }}   </td>
+            <td>{{ post[3] }}   </td>
+            <td>{{ post[4] }}   </td>
+            <td>{{ post[5] }}  </td>
+        </tr>
+{% endfor %}
+        {% for post in sabado %}
 
-
+      <tr>
+            <td> <strong>Sabado</strong> </td>
+            <td>{{ post[1] }}   </td>
+            <td>{{ post[2] }}   </td>
+            <td>{{ post[3] }}   </td>
+            <td>{{ post[4] }}   </td>
+            <td>{{ post[5] }}  </td>
+        </tr>
 {% endfor %}
 
 
@@ -39,4 +103,4 @@
 </table>
 
 
-{% endblock content2 %}
+{% endblock content1 %}

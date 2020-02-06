@@ -68,8 +68,8 @@
                     <a class="nav-link" href="{{ url_for('new_client') }}">Novo Cliente</a>
 
                 <h6>Ementa</h6>
-                    <a class="nav-link" href="{{ url_for('tab_menu') }}">Ver Ementas</a>
-                    <a class="nav-link" href="{{ url_for('new_menu') }}">Nova Ementa</a>
+                    <a class="nav-link" href="{{ url_for('tab_menu') }}">Ver Ementa</a>
+                    <a class="nav-link" href="{{ url_for('new_menu') }}">Criar Ementa</a>
 
                 <h6>Produtos</h6>
                     <a class="nav-link" href="{{ url_for('tab_product') }}">Ver Produtos</a>
@@ -80,10 +80,11 @@
       </div>
             {% else %}
           <div class="content-section">
-        <h3>Credenciais de teste</h3>
+        <h3>Efectue o Login para efectuar registos</h3>
         <p class='text-muted'>
-            user: admin1@admin1.com<br>
-            pass: admin1
+            Para testes<br>
+            user: teste@teste.com<br>
+            pass: 12345
 
         </p>
       </div>
@@ -109,6 +110,6 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" src="{{url_for('static',filename='main.js')}}"></script>
     <!-- Highcharts -->
-      <script src = "https://code.highcharts.com/highcharts.js"></script>
+     <!-- <script src = "https://code.highcharts.com/highcharts.js"></script> -->
 </body>
 </html>
