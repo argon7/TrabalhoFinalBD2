@@ -1,52 +1,45 @@
-{% extends "layout/layout.html" %}
-{% block content1 %}
-    <article class="media content-section">
+{% extends "layout/layout.html" %} {% block content1 %}
+<article class="media content-section">
     <div class="media-body">
-      <div class="article-metadata">
-      <a class="mr-2">Operações </a>
-
-
-    </div>
+        <div class="article-metadata">
+            <a class="mr-2"><strong>Deseja eliminar esta informação?</strong></a>
+        </div>
         <div>
-                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-            </div>
-
-  </div>
-    </article>
-    <article class="media content-section">
-  <div class="media-body">
-    <div class="article-metadata">
-      <a class="mr-2">Informações </a>
-      <small class="text-muted"> ID {{ transac[0] }}</small> <br>
-
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        </div>
     </div>
-      <p class="article-content"> <strong>Nome</strong> {{ transac[1] }} </p>
-
-      <p class="article-content"> <strong>Valor</strong> {{ transac[2] }}</p>
-      <p class="article-content"> <strong>Data</strong> {{ transac[3] }} </p>
-
-  </div>
 </article>
-    <!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">AVISO</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Tem a certeza que quer efectuar esta operação?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <form action="{{ url_for('delete_transacoes', post_id=transac[0]) }}" method="POST">
-            <input class="btn btn-danger" type="submit" value="Delete">
-        </form>
-      </div>
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2">Informações </a>
+            <small class="text-muted"> ID {{ transac[0] }}</small>
+            <br>
+        </div>
+        <p class="article-content"> <strong>Nome</strong> {{ transac[1] }} </p>
+        <p class="article-content"> <strong>Valor</strong> {{ transac[2] }}</p>
+        <p class="article-content"> <strong>Data</strong> {{ transac[3] }} </p>
     </div>
-  </div>
+</article>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">AVISO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Tem a certeza que quer efectuar esta operação?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{{ url_for('delete_transacoes', post_id=transac[0]) }}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content1 %}

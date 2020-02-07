@@ -1,11 +1,7 @@
 {% extends "layout/layout.html" %}
-
-<h4>{{ title }}</h4>
-
-{% block content1 %}
-
-    <table id="table_id" class="display">
-        <thead>
+<h4>{{ title }}</h4> {% block content1 %}
+<table id="table_id" class="display">
+    <thead>
         <tr>
             <th>ID</th>
             <th>Tipo</th>
@@ -14,49 +10,30 @@
             <th>Preço</th>
             <th>Alergia</th>
             <th>Quantidade</th>
-
         </tr>
-        </thead>
-        <tbody>
-
+    </thead>
+    <tbody>
         {% for each in result %}
-
-            <tr>
-                <td><a class="mr-2" href="{{ url_for('product', post_id=each[0]) }}">{{ each[0] }}</a></td>
-                <!-- tipo -->
-                {% if each[1] == 0 %}
-                    <td>Entrada</td>
-                {% endif %}
-                {% if each[1] == 1 %}
-                    <td>Bebidas</td>
-                {% endif %}
-                {% if each[1] == 2 %}
-                    <td>Sobremesas</td>
-                {% endif %}
-                {% if each[1] == 3 %}
-                    <td>Carne</td>
-                {% endif %}
-                {% if each[1] == 4 %}
-                    <td>Peixe</td>
-                {% endif %}
-                <td>{{ each[2] }}</td>
-                <td>{{ each[3] }}</td>
-                <td>{{ each[4] }}</td>
-                <td>{{ each[5] }}</td>
-                <td>{{ each[6] }}</td>
-
-            </tr>
-
-
-
-
-
-
+        <tr>
+            <td><a class="mr-2" href="{{ url_for('product', post_id=each[0]) }}">{{ each[0] }}</a></td>
+            {% if each[1] == 0 %}
+            <td>Entrada</td>
+            {% endif %} {% if each[1] == 1 %}
+            <td>Bebidas</td>
+            {% endif %} {% if each[1] == 2 %}
+            <td>Sobremesas</td>
+            {% endif %} {% if each[1] == 3 %}
+            <td>Carne</td>
+            {% endif %} {% if each[1] == 4 %}
+            <td>Peixe</td>
+            {% endif %}
+            <td>{{ each[2] }}</td>
+            <td>{{ each[3] }}</td>
+            <td>{{ each[4] }}</td>
+            <td>{{ each[5] }}</td>
+            <td>{{ each[6] }}</td>
+        </tr>
         {% endfor %}
-
-
-        </tbody>
-    </table>
-
-
+    </tbody>
+</table>
 {% endblock content1 %}

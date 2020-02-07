@@ -1,101 +1,61 @@
-{% extends "layout/layout.html" %}
-{% block content1 %}
-    <div class = "content-section">
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}<!-- hidden_tag for protection against xss -->
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4"> {{ legend }} </legend>
-                        <div class="form-group">
-                    {{ form.dia.label(class="form-control-label") }}
-                    {% if form.dia.errors %}
-                        {{ form.dia(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {%  for error in form.dia.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.dia(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.carne.label(class="form-control-label") }}
-                    {% if form.carne.errors %}
-                        {{ form.carne(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {%  for error in form.carne.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.carne(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-
-
+{% extends "layout/layout.html" %} {% block content1 %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4"> {{ legend }} </legend>
             <div class="form-group">
-                    {{ form.peixe.label(class="form-control-label") }}
-                    {% if form.peixe.errors %}
-                        {{ form.peixe(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {%  for error in form.peixe.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.peixe(class="form-control form-control-lg") }}
-                    {% endif %}
+                {{ form.dia.label(class="form-control-label") }} {% if form.dia.errors %} {{ form.dia(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.dia.errors %}
+                    <span>{{ error }}</span> {% endfor %}
                 </div>
-
-
-            <div class="form-group">
-                    {{ form.entrada.label(class="form-control-label") }}
-                    {% if form.entrada.errors %}
-                        {{ form.entrada(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {%  for error in form.entrada.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.entrada(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-
-
-                <div class="form-group">
-                    {{ form.bebida.label(class="form-control-label") }}
-                    {% if form.bebida.errors %}
-                        {{ form.bebida(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {%  for error in form.bebida.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.bebida(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-
-
-            <div class="form-group">
-                    {{ form.sobremesa.label(class="form-control-label") }}
-                    {% if form.sobremesa.errors %}
-                        {{ form.sobremesa(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {%  for error in form.sobremesa.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.sobremesa(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                {% else %} {{ form.dia(class="form-control form-control-lg") }} {% endif %}
             </div>
-
-        </form>
-    </div>
+            <div class="form-group">
+                {{ form.carne.label(class="form-control-label") }} {% if form.carne.errors %} {{ form.carne(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.carne.errors %}
+                    <span>{{ error }}</span> {% endfor %}
+                </div>
+                {% else %} {{ form.carne(class="form-control form-control-lg") }} {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.peixe.label(class="form-control-label") }} {% if form.peixe.errors %} {{ form.peixe(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.peixe.errors %}
+                    <span>{{ error }}</span> {% endfor %}
+                </div>
+                {% else %} {{ form.peixe(class="form-control form-control-lg") }} {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.entrada.label(class="form-control-label") }} {% if form.entrada.errors %} {{ form.entrada(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.entrada.errors %}
+                    <span>{{ error }}</span> {% endfor %}
+                </div>
+                {% else %} {{ form.entrada(class="form-control form-control-lg") }} {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.bebida.label(class="form-control-label") }} {% if form.bebida.errors %} {{ form.bebida(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.bebida.errors %}
+                    <span>{{ error }}</span> {% endfor %}
+                </div>
+                {% else %} {{ form.bebida(class="form-control form-control-lg") }} {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.sobremesa.label(class="form-control-label") }} {% if form.sobremesa.errors %} {{ form.sobremesa(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.sobremesa.errors %}
+                    <span>{{ error }}</span> {% endfor %}
+                </div>
+                {% else %} {{ form.sobremesa(class="form-control form-control-lg") }} {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
 {% endblock content1 %}

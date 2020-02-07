@@ -2,23 +2,17 @@ import psycopg2
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
-
 from app import cursor
 
 
-# ----------------------------- TESTES ----------------------------------------------------------------------
-class RegistrationForm(FlaskForm):  # inherits from FlaskForm
+class RegistrationForm(FlaskForm):
     global choose
-    # ---------------------------getnomesrestaurantes---------------
     try:
         i = 0
         cursor.callproc('getNomeRestaurantes')
-        # cursor.execute("SELECT * FROM restaurante")
         result = cursor.fetchall()
-        # print(result)
         for column in result[0]:
             for bull in column:
-                # print(column[i])
                 if i == 0:
                     choose = [(column[0], column[0])]
                 else:
@@ -29,14 +23,6 @@ class RegistrationForm(FlaskForm):  # inherits from FlaskForm
         print("Error while connecting to PostgreSQL", error)
     finally:
         print()
-        # O formato da lista que recebe tem de ser igual a
-        # choose = [('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')]
-
-        # print(choose)
-        # print("done")
-
-    # -----------------------------------------------------------
-
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -76,30 +62,16 @@ class RegistrationForm(FlaskForm):  # inherits from FlaskForm
             raise ValidationError('Email already has an account associated')
 
 
-class LoginForm(FlaskForm):  # inherits from FlaskForm
+class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post')
-
-
-# ----------------------------- TRANSACOES ----------------------------------------------------------------------
-
-
 class TransacoesForm(FlaskForm):
     global lcarne, lbebida, lpeixe, lsobremesa, lentrada
-    lugar = [("1", 'Esplanada'), ("2", 'Bar'), ("3", 'Salão'),("4", 'Sala VIP')]
-
-    # ementacarne = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
-
+    lugar = [("1", 'Esplanada'), ("2", 'Bar'), ("3", 'Salão'), ("4", 'Sala VIP')]
     try:
-
         cursor.callproc('getAllCarne')
         resultlCarne = cursor.fetchall()
         lcarne = [("-1", "SEM PEDIDO")]
@@ -107,9 +79,6 @@ class TransacoesForm(FlaskForm):
             lcarne += [(str(column[0]), column[2])]
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
-
-    # ementapeixe = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
-
     try:
         cursor.callproc('getAllPeixe')
         resultlpeixe = cursor.fetchall()
@@ -118,9 +87,6 @@ class TransacoesForm(FlaskForm):
             lpeixe += [(str(column[0]), column[2])]
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
-
-    # ementaentrada = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
-
     try:
         cursor.callproc('getAllEntradas')
         resultlentrada = cursor.fetchall()
@@ -129,8 +95,6 @@ class TransacoesForm(FlaskForm):
             lentrada += [(str(column[0]), column[2])]
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
-
-    # ementabebida = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
     try:
         cursor.callproc('getAllBebidas')
         resultlbebida = cursor.fetchall()
@@ -140,9 +104,6 @@ class TransacoesForm(FlaskForm):
         print(lbebida)
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
-
-    # ementasobremesa = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
-
     try:
         cursor.callproc('getAllSobremesas')
         resultlsobremesa = cursor.fetchall()
@@ -160,19 +121,12 @@ class TransacoesForm(FlaskForm):
     entrada = SelectField(u'Entrada', choices=lentrada, validators=[DataRequired()])
     bebida = SelectField(u'Bebida', choices=lbebida, validators=[DataRequired()])
     sobremesa = SelectField(u'Sobremesa', choices=lsobremesa, validators=[DataRequired()])
-
     submit = SubmitField('Registrar transação')
-
-
-# ----------------------------- CLIENTES ----------------------------------------------------------------------
 
 
 class ClientForm(FlaskForm):
     NomeCliente = StringField('Nome do cliente', validators=[DataRequired()])
     submit = SubmitField('Adicionar cliente')
-
-
-# ----------------------------- Menu ----------------------------------------------------------------------
 
 
 class MenuForm(FlaskForm):
@@ -181,9 +135,6 @@ class MenuForm(FlaskForm):
                  ('3', 'Quarta'), ('4', 'Quinta'), ('5', 'Sexta'), ('6', 'Sábado')]
     ementalugar = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),
                    ('interior 4', 'interior 4')]
-
-    # ementacarne = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
-
     try:
         i = 0
         cursor.callproc('getAllCarne')
@@ -196,8 +147,6 @@ class MenuForm(FlaskForm):
             i = i + 1
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
-
-    # ementapeixe = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
 
     try:
         i = 0
@@ -212,8 +161,6 @@ class MenuForm(FlaskForm):
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
 
-    # ementaentrada = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
-
     try:
         i = 0
         cursor.callproc('getAllEntradas')
@@ -227,7 +174,6 @@ class MenuForm(FlaskForm):
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
 
-    # ementabebida = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
     try:
         i = 0
         cursor.callproc('getAllBebidas')
@@ -242,8 +188,6 @@ class MenuForm(FlaskForm):
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
 
-   # ementasobremesa = [('esplanada 1', 'esplanada 1'), ('esplanada 2', 'esplanada 2'), ('interior 3', 'interior 3'),('interior 4', 'interior 4')]
-
     try:
         i = 0
         cursor.callproc('getAllSobremesas')
@@ -257,7 +201,6 @@ class MenuForm(FlaskForm):
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
 
-    # title = StringField('Dia da semana', validators=[DataRequired()])
     dia = SelectField(u'Dia da semana', choices=ementadia, validators=[DataRequired()])
     carne = SelectField(u'Carne', choices=ementacarne, validators=[DataRequired()])
     peixe = SelectField(u'Peixe', choices=ementapeixe, validators=[DataRequired()])
@@ -265,9 +208,6 @@ class MenuForm(FlaskForm):
     bebida = SelectField(u'Bebida', choices=ementabebida, validators=[DataRequired()])
     sobremesa = SelectField(u'Sobremesa', choices=ementasobremesa, validators=[DataRequired()])
     submit = SubmitField('Confirmar atualização da ementa')
-
-
-# ----------------------------- Product ----------------------------------------------------------------------
 
 
 class ProductForm(FlaskForm):
@@ -278,5 +218,4 @@ class ProductForm(FlaskForm):
     preco = StringField('Preço', validators=[DataRequired()])
     quantidade = StringField('Quantidade', validators=[DataRequired()])
     tipo = SelectField(u'Tipo', choices=choosetipo, validators=[DataRequired()])
-    # myint = IntegerField('Number', widget=html5.NumberInput())
     submit = SubmitField('Registrar Produto')
