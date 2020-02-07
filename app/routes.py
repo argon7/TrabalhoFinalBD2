@@ -58,8 +58,15 @@ def login():
             print("Error while connecting to PostgreSQL", error)
         if (IsUserLoggedIn[0][0]):
             AdminNameLoggedIn = form.email.data
+            try:
+                print(" Transacoes : sent " + AdminNameLoggedIn)
+                cursor.callproc('getAllTransacoes', [AdminNameLoggedIn])
+                alltransacoes = cursor.fetchall()
+                print("Transacoes got from bd")
+            except (Exception, psycopg2.DatabaseError) as error:
+                print("Error while connecting to PostgreSQL", error)
             return render_template('transacoes/tab_transacoes.html', title="Transações",
-                                   IsUserLoggedIn=IsUserLoggedIn)
+                                   IsUserLoggedIn=IsUserLoggedIn,alltransacoes=alltransacoes)
         else:
             flash(f'Login unsuccessful', 'danger')
             IsUserLoggedIn = False
