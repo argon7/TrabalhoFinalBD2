@@ -1,0 +1,45 @@
+{% extends "layout/layout.html" %} {% block content1 %} <h4>Estatísticas de Consumo</h4>
+    <div id="container" style="..."></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var Mychart = Highcharts.chart('container', {
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Top clientes'
+                },
+                subtitle: {
+                    text: 'Consumo desta semana'
+                },
+                xAxis: {
+                    categories: ['Domingo']
+                },
+                yAxis: {
+                    title: {
+                        text: 'Valor €'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [{
+                    name: 'Share',
+                    data: [
+                        {name: 'algo', y: 61.41},
+                        {name: 'Internet Explorer', y: 11.84},
+                        {name: 'Firefox', y: 10.85},
+                        {name: 'Edge', y: 4.67},
+                        {name: 'Safari', y: 4.18},
+                        {name: 'Other', y: 7.05}
+                    ]
+                }]
+            });
+        });
+    </script>
+{% endblock content1 %}

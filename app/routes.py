@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request
 from app.forms import RegistrationForm, LoginForm, TransacoesForm, ClientForm, ProductForm, MenuForm
 from app import app, psycopg2
 from app import cursor
-
+import xml.etree.ElementTree as ET
 IsUserLoggedIn = False
 AdminNameLoggedIn = ""
 
@@ -12,6 +12,23 @@ def home():
     global IsUserLoggedIn
     global AdminNameLoggedIn
     return render_template("layout/home.html", title='Home', IsUserLoggedIn=IsUserLoggedIn, AdminNameLoggedIn=AdminNameLoggedIn)
+
+
+@app.route('/stats')
+def stats():
+    global IsUserLoggedIn
+    global AdminNameLoggedIn
+    try:
+        cursor.callproc('getTopTransacoes_XML')
+        xml = cursor.fetchall()
+        root = ET.fromstring(xml[0][0])
+        # print(xml[0][0])
+        for child in root:
+            print(child[0].tag, child[0].attrib)
+        print(root[0][1].text)
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while connecting to PostgreSQL", error)
+    return render_template("stats/stats.html", title='Estatísticas', IsUserLoggedIn=IsUserLoggedIn, AdminNameLoggedIn=AdminNameLoggedIn,xmldoc=xml)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -327,16 +344,29 @@ def product(post_id):
         print("Error while connecting to PostgreSQL", error)
     form = ProductForm()
     if form.validate_on_submit():
+        try:
+            cursor.callproc('updateProduto',[post_id,form.nome.data,form.designacao.data,form.preco.data,form.alergia.data,form.quantidade.data])
+            updateprod = cursor.fetchall()
+            print("ON UPDATE:"+updateprod)
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
         flash(f'Changes were updated successfully', 'success')
         return redirect(url_for('tab_product'))
     elif request.method == 'GET':
+        try:
+            cursor.callproc('getProduto',[post_id])
+            getprod = cursor.fetchall()
+            print("GET PROD:"+getprod)
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+        flash(f'Changes were updated successfully', 'success')
         form.choosetipo = [('0', 'Entradas'), ('1', 'Bebidas'), ('2', 'Sobremesas'), ('3', 'Carne'), ('4', 'Peixe')]
-        form.nome.data = resultprod[post_id - 1][2]
-        form.designacao.data = resultprod[post_id - 1][3]
-        form.alergia.data = resultprod[post_id - 1][5]
-        form.preco.data = resultprod[post_id - 1][4]  # correto
-        form.quantidade.data = resultprod[post_id - 1][6]  # correto
-        form.tipo.data = resultprod[post_id - 1][6]  # correto
+        form.nome.data = getprod[0][2]
+        form.designacao.data = getprod[0][3]
+        form.alergia.data = getprod[0][5]
+        form.preco.data = getprod[0][4]
+        form.quantidade.data = getprod[0][6]
+        form.tipo.data = getprod[0][1]
         return render_template('product/update_product.html', title="Editar produto", form=form,
                                legend='Editar produto', IsUserLoggedIn=IsUserLoggedIn, post_id=post_id)
 
@@ -346,7 +376,7 @@ def delete_product(post_id):
     global AdminNameLoggedIn
     try:
         print("del here")
-        # cursor.callproc('', [AdminNameLoggedIn, post_id])
+        cursor.callproc('deleteProduto', [post_id])
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
     flash(f'Delete successfull', 'info')
