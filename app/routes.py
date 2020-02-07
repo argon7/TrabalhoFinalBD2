@@ -3,32 +3,34 @@ from app.forms import RegistrationForm, LoginForm, TransacoesForm, ClientForm, P
 from app import app, psycopg2
 from app import cursor
 import xml.etree.ElementTree as ET
+from lxml import etree
+from io import StringIO, BytesIO
+
 IsUserLoggedIn = False
 AdminNameLoggedIn = ""
+
 
 @app.route('/')
 @app.route('/home')
 def home():
     global IsUserLoggedIn
     global AdminNameLoggedIn
-    return render_template("layout/home.html", title='Home', IsUserLoggedIn=IsUserLoggedIn, AdminNameLoggedIn=AdminNameLoggedIn)
+    return render_template("layout/home.html", title='Home', IsUserLoggedIn=IsUserLoggedIn,
+                           AdminNameLoggedIn=AdminNameLoggedIn)
 
 
 @app.route('/stats')
 def stats():
-    global IsUserLoggedIn
+    global IsUserLoggedIn, result, xml
     global AdminNameLoggedIn
     try:
         cursor.callproc('getTopTransacoes_XML')
         xml = cursor.fetchall()
         root = ET.fromstring(xml[0][0])
-        # print(xml[0][0])
-        for child in root:
-            print(child[0].tag, child[0].attrib)
-        print(root[0][1].text)
+        return render_template("stats/stats.html", title='Estatísticas', IsUserLoggedIn=IsUserLoggedIn,
+                               AdminNameLoggedIn=AdminNameLoggedIn, result=root)
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL", error)
-    return render_template("stats/stats.html", title='Estatísticas', IsUserLoggedIn=IsUserLoggedIn, AdminNameLoggedIn=AdminNameLoggedIn,xmldoc=xml)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -83,7 +85,7 @@ def login():
             except (Exception, psycopg2.DatabaseError) as error:
                 print("Error while connecting to PostgreSQL", error)
             return render_template('transacoes/tab_transacoes.html', title="Transações",
-                                   IsUserLoggedIn=IsUserLoggedIn,alltransacoes=alltransacoes)
+                                   IsUserLoggedIn=IsUserLoggedIn, alltransacoes=alltransacoes)
         else:
             flash(f'Login unsuccessful', 'danger')
             IsUserLoggedIn = False
@@ -347,7 +349,7 @@ def product(post_id):
         try:
             cursor.callproc('updateProduto',[post_id,form.nome.data,form.designacao.data,form.preco.data,form.alergia.data,form.quantidade.data])
             updateprod = cursor.fetchall()
-            print("ON UPDATE:"+updateprod)
+            print("ON UPDATE:"+str(updateprod))
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error while connecting to PostgreSQL", error)
         flash(f'Changes were updated successfully', 'success')
@@ -356,10 +358,9 @@ def product(post_id):
         try:
             cursor.callproc('getProduto',[post_id])
             getprod = cursor.fetchall()
-            print("GET PROD:"+getprod)
+            print("GET PROD:"+str(getprod))
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error while connecting to PostgreSQL", error)
-        flash(f'Changes were updated successfully', 'success')
         form.choosetipo = [('0', 'Entradas'), ('1', 'Bebidas'), ('2', 'Sobremesas'), ('3', 'Carne'), ('4', 'Peixe')]
         form.nome.data = getprod[0][2]
         form.designacao.data = getprod[0][3]
@@ -369,6 +370,7 @@ def product(post_id):
         form.tipo.data = getprod[0][1]
         return render_template('product/update_product.html', title="Editar produto", form=form,
                                legend='Editar produto', IsUserLoggedIn=IsUserLoggedIn, post_id=post_id)
+
 
 @app.route('/product/<int:post_id>/delete', methods=['POST'])
 def delete_product(post_id):

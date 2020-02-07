@@ -1,5 +1,37 @@
 {% extends "layout/layout.html" %} {% block content1 %} <h4>Estatísticas de Consumo</h4>
-    <div id="container" style="..."></div>
+    <div id="container" style="..."></div><br><br>
+    <h4>Top Clientes</h4><br>
+    <table id="table_id" class="display">
+        <thead>
+        <tr>
+            <th>Nome cliente</th>
+            <th>Valor €</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td id="id00">{{ result[0][0].text | safe }}</td>
+            <td id="id01">{{ result[0][1].text | safe }}</td>
+        </tr>
+        <tr>
+            <td id="id10">{{ result[1][0].text | safe }}</td>
+            <td id="id11">{{ result[1][1].text | safe }}</td>
+        </tr>
+        <tr>
+            <td id="id20">{{ result[2][0].text | safe }}</td>
+            <td id="id21">{{ result[2][1].text | safe }}</td>
+        </tr>
+        <tr>
+            <td id="id30">{{ result[3][0].text | safe }}</td>
+            <td id="id31">{{ result[3][1].text | safe }}</td>
+        </tr>
+        <tr>
+            <td id="id40">{{ result[4][0].text | safe }}</td>
+            <td id="id41">{{ result[4][1].text | safe }}</td>
+        </tr>
+        </tbody>
+    </table>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var Mychart = Highcharts.chart('container', {
@@ -29,14 +61,28 @@
                     }
                 },
                 series: [{
-                    name: 'Share',
+                    name: 'Gastos em €',
                     data: [
-                        {name: 'algo', y: 61.41},
-                        {name: 'Internet Explorer', y: 11.84},
-                        {name: 'Firefox', y: 10.85},
-                        {name: 'Edge', y: 4.67},
-                        {name: 'Safari', y: 4.18},
-                        {name: 'Other', y: 7.05}
+                        {
+                            name: document.getElementById("id00").innerHTML,
+                            y: parseInt(document.getElementById("id01").innerHTML)
+                        },
+                        {
+                            name: document.getElementById("id10").innerHTML,
+                            y: parseInt(document.getElementById("id11").innerHTML)
+                        },
+                        {
+                            name: document.getElementById("id20").innerHTML,
+                            y: parseInt(document.getElementById("id21").innerHTML)
+                        },
+                        {
+                            name: document.getElementById("id30").innerHTML,
+                            y: parseInt(document.getElementById("id31").innerHTML)
+                        },
+                        {
+                            name: document.getElementById("id40").innerHTML,
+                            y: parseInt(document.getElementById("id41").innerHTML)
+                        }
                     ]
                 }]
             });
