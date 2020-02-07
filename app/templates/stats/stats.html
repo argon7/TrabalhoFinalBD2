@@ -1,11 +1,11 @@
-{% extends "layout/layout.html" %} {% block content1 %} <h4>Estatísticas de Consumo</h4>
+{% extends "layout/layout.html" %} {% block content1 %} <h4>Estatísticas de Transações</h4>
     <div id="container" style="..."></div><br><br>
     <h4>Top Clientes</h4><br>
     <table id="table_id" class="display">
         <thead>
         <tr>
             <th>Nome cliente</th>
-            <th>Valor €</th>
+            <th>Transações</th>
         </tr>
         </thead>
         <tbody>
@@ -42,7 +42,7 @@
                     text: 'Top clientes'
                 },
                 subtitle: {
-                    text: 'Consumo desta semana'
+                    text: 'Transações desta semana'
                 },
                 xAxis: {
                     categories: ['Domingo']
@@ -61,7 +61,7 @@
                     }
                 },
                 series: [{
-                    name: 'Gastos em €',
+                    name: 'Número de transações',
                     data: [
                         {
                             name: document.getElementById("id00").innerHTML,
